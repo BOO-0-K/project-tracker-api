@@ -1,10 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
-import { CategoryEntity } from 'src/entities/category.entity';
-import { TemplateCategoryEntity } from 'src/entities/template-category.entity';
-import { TemplateEntity } from 'src/entities/template.entity';
-import { TodoEntity } from 'src/entities/todo.entity';
-import { UserEntity } from 'src/entities/user.entity';
+import { CategoryEntity } from 'src/_entities/category.entity';
+import { TemplateCategoryEntity } from 'src/_entities/template-category.entity';
+import { TemplateEntity } from 'src/_entities/template.entity';
+import { TodoEntity } from 'src/_entities/todo.entity';
+import { UserEntity } from 'src/_entities/user.entity';
 dotenv.config();
 
 const entities = [
@@ -17,7 +17,7 @@ const entities = [
 
 export let typeORMConfig: TypeOrmModuleOptions;
 if (process.env.NODE_ENV === 'dev') {
-  // dev
+  //dev
   console.log('DB 연결 성공...✅');
   typeORMConfig = {
     type: 'mysql',
@@ -34,7 +34,7 @@ if (process.env.NODE_ENV === 'dev') {
     timezone: '+09:00',
   };
 } else if (process.env.NODE_ENV === 'test') {
-  // test
+  //test
   console.log('DB 연결 성공...✅');
   typeORMConfig = {
     type: 'mysql',
@@ -51,7 +51,7 @@ if (process.env.NODE_ENV === 'dev') {
     timezone: '+09:00',
   };
 } else {
-  // prod
+  //prod
   console.log('DB 연결 성공...✅');
   typeORMConfig = {
     type: 'mysql',
