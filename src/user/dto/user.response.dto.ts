@@ -16,3 +16,15 @@ export class SigninResponseDto {
   readonly message: string;
   readonly data: object;
 }
+
+//이메일
+export class EmailDto {
+  readonly email: string;
+}
+
+// 내 정보 보기 Response
+export class MeResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+  readonly data: object;
+}

@@ -1,18 +1,24 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { SigninRequestDto, SignupRequestDto } from './dto/user.request.dto';
 import {
   AccessTokenDto,
+  MeResponseDto,
   SigninResponseDto,
   SignupResponseDto,
 } from './dto/user.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
+import { AuthGuard } from '@nestjs/passport';
+import { UserEntity } from 'src/_entities/user.entity';
+import { Token } from 'src/_commons/auth/token.decorator';
 
 @Controller('users')
 export class UserController {
@@ -52,6 +58,22 @@ export class UserController {
       statusCode: 200,
       message: CustomHttpSuccess['SIGNIN_SUCCESS'],
       data: accessToken,
+    };
+  }
+
+  /**
+   * 내 정보 보기
+   * @param user UserEntity
+   * @returns MeResponseDto
+   */
+  @Get('/me')
+  @UseGuards(AuthGuard())
+  async getMyInfo(@Token() user: UserEntity): Promise<MeResponseDto> {
+    const email = await this.userService.getMyInfo(user);
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['GET_MY_INFO_SUCCESS'],
+      data: email,
     };
   }
 }

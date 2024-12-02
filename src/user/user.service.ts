@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { UserRepository } from 'src/_repositories/user.repository';
 import { SigninRequestDto, SignupRequestDto } from './dto/user.request.dto';
-import { AccessTokenDto } from './dto/user.response.dto';
+import { AccessTokenDto, EmailDto } from './dto/user.response.dto';
 import { UserEntity } from 'src/_entities/user.entity';
 import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
@@ -72,5 +72,16 @@ export class UserService {
     const accessToken: string = await this.jwtService.sign(payload);
 
     return { accessToken };
+  }
+
+  /**
+   * 내 정보 보기
+   * @param user UserEntity
+   * @returns EmailDto
+   */
+  async getMyInfo(user: UserEntity): Promise<EmailDto> {
+    const email: string = user.email;
+
+    return { email };
   }
 }
