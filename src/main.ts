@@ -8,6 +8,6 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   app.enableCors();
   await app.listen(port);
-  console.log(`🚀 listening on port ${port}.`);
+  console.log(`🚀 ${port}번 포트에서 서버 실행 중입니다.`);
 }
 bootstrap();
