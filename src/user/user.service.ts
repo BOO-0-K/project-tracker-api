@@ -25,10 +25,7 @@ export class UserService {
     //이메일로 회원 찾기
     const user: UserEntity = await this.userRepository.findByEmail(email);
     if (user) {
-      throw new HttpException(
-        CustomHttpException['CONFLICT_EMAIL'],
-        HttpStatus.CONFLICT,
-      );
+      throw new HttpException(CustomHttpException['CONFLICT_EMAIL'], HttpStatus.CONFLICT);
     }
 
     //회원 생성
@@ -54,17 +51,11 @@ export class UserService {
     //이메일로 회원 찾기
     const user: UserEntity = await this.userRepository.findByEmail(email);
     if (!user) {
-      throw new HttpException(
-        CustomHttpException['UNAUTHORIZED_ACCOUNT'],
-        HttpStatus.UNAUTHORIZED,
-      ); //이메일이 없는 경우
+      throw new HttpException(CustomHttpException['UNAUTHORIZED_ACCOUNT'], HttpStatus.UNAUTHORIZED); //이메일이 없는 경우
     }
 
     if (!(await bcrypt.compare(password, user['password']))) {
-      throw new HttpException(
-        CustomHttpException['UNAUTHORIZED_ACCOUNT'],
-        HttpStatus.UNAUTHORIZED,
-      ); //패스워드가 다른 경우
+      throw new HttpException(CustomHttpException['UNAUTHORIZED_ACCOUNT'], HttpStatus.UNAUTHORIZED); //패스워드가 다른 경우
     }
 
     //JWT 토큰 생성

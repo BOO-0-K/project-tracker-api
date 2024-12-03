@@ -9,9 +9,6 @@ export class AppController {
 
   @Get('/test/error')
   getTestError(): string {
-    throw new HttpException(
-      '😵 500 server error test.',
-      HttpStatus.INTERNAL_SERVER_ERROR,
-    );
+    throw new HttpException('😵 500 server error test.', HttpStatus.INTERNAL_SERVER_ERROR);
   }
 }
