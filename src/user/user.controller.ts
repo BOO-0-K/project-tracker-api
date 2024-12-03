@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  Post,
-  UseGuards,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { UserService } from './user.service';
 import { SigninRequestDto, SignupRequestDto } from './dto/user.request.dto';
 import {
@@ -33,8 +25,7 @@ export class UserController {
   async signup(
     @Body(ValidationPipe) signupRequestDto: SignupRequestDto,
   ): Promise<SignupResponseDto> {
-    const accessToken: AccessTokenDto =
-      await this.userService.signup(signupRequestDto);
+    const accessToken: AccessTokenDto = await this.userService.signup(signupRequestDto);
     return {
       statusCode: 201,
       message: CustomHttpSuccess['SIGNUP_SUCCESS'],
@@ -52,8 +43,7 @@ export class UserController {
   async signin(
     @Body(ValidationPipe) signinRequestDto: SigninRequestDto,
   ): Promise<SigninResponseDto> {
-    const accessToken: AccessTokenDto =
-      await this.userService.signin(signinRequestDto);
+    const accessToken: AccessTokenDto = await this.userService.signin(signinRequestDto);
     return {
       statusCode: 200,
       message: CustomHttpSuccess['SIGNIN_SUCCESS'],
