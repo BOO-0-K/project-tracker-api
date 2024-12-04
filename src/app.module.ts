@@ -4,9 +4,10 @@ import { LoggerMiddleware } from './_commons/middlewares/logger.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { typeORMConfig } from './_configs/typeorm.config';
 import { UserModule } from './user/user.module';
+import { CategoryModule } from './category/category.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), UserModule],
+  imports: [TypeOrmModule.forRoot(typeORMConfig), UserModule, CategoryModule],
   controllers: [AppController],
   providers: [],
 })
