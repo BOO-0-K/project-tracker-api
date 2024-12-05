@@ -37,10 +37,7 @@ export class CategoryEntity extends BaseEntity {
   })
   user: UserEntity;
 
-  @OneToMany(
-    () => TemplateCategoryEntity,
-    (templateCategory) => templateCategory.category,
-  )
+  @OneToMany(() => TemplateCategoryEntity, (templateCategory) => templateCategory.category)
   templateCategory: TemplateCategoryEntity[];
 
   @OneToMany(() => TodoEntity, (todo) => todo.category)

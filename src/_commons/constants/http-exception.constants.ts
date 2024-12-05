@@ -4,6 +4,11 @@ export const CustomHttpException = {
     code: 'UNAUTHORIZED_ACCOUNT',
     message: '잘못된 아이디 또는 패스워드입니다.',
   },
+  FORBIDDEN_TODO: {
+    statusCode: 403,
+    code: 'FORBIDDEN_TODO',
+    message: '해당 투두의 접근 권한이 없습니다.',
+  },
   FORBIDDEN_CATEGORY: {
     statusCode: 403,
     code: 'FORBIDDEN_CATEGORY',
