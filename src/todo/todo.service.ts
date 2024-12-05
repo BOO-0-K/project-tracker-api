@@ -87,4 +87,20 @@ export class TodoService {
 
     await this.todoRepository.updateTodo(id, todoRequestDto);
   }
+
+  /**
+   * ToDo 삭제
+   * @param userId number
+   * @param id number
+   * @returns
+   */
+  async deleteTodo(userId: number, id: number): Promise<void> {
+    //투두 접근 권한 체크
+    const todo: TodoEntity = await this.todoRepository.checkTodoAccess(userId, id);
+    if (!todo) {
+      throw new HttpException(CustomHttpException['FORBIDDEN_TODO'], HttpStatus.FORBIDDEN);
+    }
+
+    await this.todoRepository.deleteTodo(id);
+  }
 }

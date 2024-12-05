@@ -38,3 +38,9 @@ export class TodoUpdateResponseDto {
   readonly statusCode: number;
   readonly message: string;
 }
+
+//ToDo 삭제 Response
+export class TodoDeleteResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+}

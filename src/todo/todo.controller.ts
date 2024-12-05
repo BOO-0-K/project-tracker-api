@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -16,6 +17,7 @@ import { UserEntity } from 'src/_entities/user.entity';
 import { CategoryIdRequestDto, TodoRequestDto } from './dto/todo.request.dto';
 import {
   TodoAddResponseDto,
+  TodoDeleteResponseDto,
   TodoIdDto,
   TodoListDto,
   TodoListResponseDto,
@@ -85,6 +87,25 @@ export class TodoController {
     return {
       statusCode: 200,
       message: CustomHttpSuccess['UPDATE_TODO_SUCCESS'],
+    };
+  }
+
+  /**
+   * ToDo 삭제
+   * @param user UserEntity
+   * @param id string
+   * @returns TodoDeleteResponseDto
+   */
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async deleteTodo(
+    @Token() user: UserEntity,
+    @Param('id') id: string,
+  ): Promise<TodoDeleteResponseDto> {
+    await this.todoService.deleteTodo(+user.id, +id);
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['DELETE_TODO_SUCCESS'],
     };
   }
 }

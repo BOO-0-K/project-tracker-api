@@ -80,4 +80,16 @@ export class TodoRepository extends Repository<TodoEntity> {
       );
     }
   }
+
+  //ToDo 삭제
+  async deleteTodo(id: number): Promise<void> {
+    try {
+      await this.delete(id);
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }
