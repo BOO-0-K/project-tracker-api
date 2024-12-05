@@ -89,4 +89,16 @@ export class CategoryRepository extends Repository<CategoryEntity> {
       );
     }
   }
+
+  //카테고리 삭제
+  async deleteCategory(id: number): Promise<void> {
+    try {
+      await this.delete(id);
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

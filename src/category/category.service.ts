@@ -77,4 +77,23 @@ export class CategoryService {
 
     await this.categoryRepository.updateCategory(id, categoryRequestDto);
   }
+
+  /**
+   * 카테고리 삭제
+   * @param userId number
+   * @param id number
+   * @returns
+   */
+  async deleteCategory(userId: number, id: number): Promise<void> {
+    //카테고리 접근 권한 체크
+    const categoryAccess: CategoryEntity = await this.categoryRepository.checkCategoryAccess(
+      userId,
+      id,
+    );
+    if (!categoryAccess) {
+      throw new HttpException(CustomHttpException['FORBIDDEN_CATEGORY'], HttpStatus.FORBIDDEN);
+    }
+
+    await this.categoryRepository.deleteCategory(id);
+  }
 }

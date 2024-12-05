@@ -1,10 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserEntity } from 'src/_entities/user.entity';
 import { CategoryRequestDto } from './dto/category.request.dto';
 import {
   CategoryAddResponseDto,
+  CategoryDeleteResponseDto,
   CategoryIdDto,
   CategoryListDto,
   CategoryListResponseDto,
@@ -75,6 +86,25 @@ export class CategoryController {
     return {
       statusCode: 200,
       message: CustomHttpSuccess['UPDATE_CATEGORY_SUCCESS'],
+    };
+  }
+
+  /**
+   * 카테고리 삭제
+   * @param user UserEntity
+   * @param id string
+   * @returns CategoryDeleteResponseDto
+   */
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async deleteCategory(
+    @Token() user: UserEntity,
+    @Param('id') id: string,
+  ): Promise<CategoryDeleteResponseDto> {
+    await this.categoryService.deleteCategory(+user.id, +id);
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['DELETE_CATEGORY_SUCCESS'],
     };
   }
 }

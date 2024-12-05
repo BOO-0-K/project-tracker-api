@@ -33,3 +33,9 @@ export class CategoryUpdateResponseDto {
   readonly statusCode: number;
   readonly message: string;
 }
+
+//카테고리 삭제 Response
+export class CategoryDeleteResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+}
