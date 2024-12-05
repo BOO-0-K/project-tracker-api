@@ -26,9 +26,15 @@ export class TodoListDto {
   readonly todos: Array<TodoDto>;
 }
 
-//Todo 리스트 Response
+//ToDo 리스트 Response
 export class TodoListResponseDto {
   readonly statusCode: number;
   readonly message: string;
   readonly data: object;
+}
+
+//ToDo 수정 Response
+export class TodoUpdateResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
 }

@@ -55,4 +55,29 @@ export class TodoRepository extends Repository<TodoEntity> {
       );
     }
   }
+
+  //ToDo 접근 권한 체크
+  async checkTodoAccess(userId: number, id: number): Promise<TodoEntity> {
+    try {
+      const todo: TodoEntity = await this.findOne({ where: { userId: userId, id: id } });
+      return todo;
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //ToDo 수정
+  async updateTodo(id: number, todoRequestDto: TodoRequestDto): Promise<void> {
+    try {
+      await this.update(id, todoRequestDto);
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

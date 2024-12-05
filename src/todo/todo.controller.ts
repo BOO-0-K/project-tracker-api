@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Query, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { TodoService } from './todo.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Token } from 'src/_commons/auth/token.decorator';
@@ -9,6 +19,7 @@ import {
   TodoIdDto,
   TodoListDto,
   TodoListResponseDto,
+  TodoUpdateResponseDto,
 } from './dto/todo.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
 
@@ -53,6 +64,27 @@ export class TodoController {
       statusCode: 200,
       message: CustomHttpSuccess['GET_TODOS_SUCCESS'],
       data: todos,
+    };
+  }
+
+  /**
+   * ToDo 수정
+   * @param user UserEntity
+   * @param id string
+   * @param todoRequestDto TodoRequestDto
+   * @returns TodoUpdateResponseDto
+   */
+  @Patch(':id')
+  @UseGuards(AuthGuard())
+  async updateTodo(
+    @Token() user: UserEntity,
+    @Param('id') id: string,
+    @Body(ValidationPipe) todoRequestDto: TodoRequestDto,
+  ): Promise<TodoUpdateResponseDto> {
+    await this.todoService.updateTodo(+user.id, +id, todoRequestDto);
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['UPDATE_TODO_SUCCESS'],
     };
   }
 }
