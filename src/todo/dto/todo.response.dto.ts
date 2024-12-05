@@ -9,3 +9,26 @@ export class TodoAddResponseDto {
   readonly message: string;
   readonly data: object;
 }
+
+//ToDo
+export class TodoDto {
+  readonly id: number;
+  readonly categoryId: number;
+  readonly status: string;
+  readonly memo: string;
+  readonly today: string;
+  readonly categoryName: string;
+  readonly createdAt: Date;
+}
+
+//ToDo 리스트
+export class TodoListDto {
+  readonly todos: Array<TodoDto>;
+}
+
+//Todo 리스트 Response
+export class TodoListResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+  readonly data: object;
+}

@@ -20,3 +20,8 @@ export class TodoRequestDto {
   @IsNotEmpty()
   today: string; //투두 날짜
 }
+
+export class CategoryIdRequestDto {
+  @IsNotEmpty()
+  categoryId: number; // 카테고리 아이디
+}
