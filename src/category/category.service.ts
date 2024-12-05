@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CategoryRepository } from 'src/_repositories/category.repository';
 import { CategoryRequestDto } from './dto/category.request.dto';
-import { CategoryIdDto } from './dto/category.response.dto';
+import { CategoryDto, CategoryIdDto, CategoryListDto } from './dto/category.response.dto';
 import { CategoryEntity } from 'src/_entities/category.entity';
 import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
@@ -32,5 +32,15 @@ export class CategoryService {
     //카테고리 추가
     const categoryId: number = await this.categoryRepository.createCategory(userId, name);
     return { id: categoryId };
+  }
+
+  /**
+   * 카테고리 리스트
+   * @param userId number
+   * @returns CategoryListDto
+   */
+  async getCategories(userId: number): Promise<CategoryListDto> {
+    const categories: Array<CategoryDto> = await this.categoryRepository.findAllCategories(userId);
+    return { categories: categories };
   }
 }

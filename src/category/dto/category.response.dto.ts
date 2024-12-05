@@ -9,3 +9,21 @@ export class CategoryAddResponseDto {
   readonly message: string;
   readonly data: object;
 }
+
+//카테고리
+export class CategoryDto {
+  readonly id: number;
+  readonly name: string;
+}
+
+//카테고리 리스트
+export class CategoryListDto {
+  readonly categories: Array<CategoryDto>;
+}
+
+//카테고리 리스트 Response
+export class CategoryListResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+  readonly data: object;
+}

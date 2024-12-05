@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 import { CategoryEntity } from 'src/_entities/category.entity';
+import { CategoryDto } from 'src/category/dto/category.response.dto';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
@@ -30,6 +31,26 @@ export class CategoryRepository extends Repository<CategoryEntity> {
     try {
       const category = await this.insert({ userId: userId, name: name });
       return category.identifiers[0].id;
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //모든 카테고리 리스트 조회
+  async findAllCategories(userId: number): Promise<Array<CategoryDto>> {
+    try {
+      const categories: Array<CategoryDto> = await this.find({
+        where: { userId: userId },
+        order: {
+          createdAt: 'ASC',
+        },
+        select: ['id', 'name'],
+      });
+
+      return categories;
     } catch (error) {
       throw new HttpException(
         CustomHttpException['DB_SERVER_ERROR'],
