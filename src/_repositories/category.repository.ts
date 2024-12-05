@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 import { CategoryEntity } from 'src/_entities/category.entity';
+import { CategoryRequestDto } from 'src/category/dto/category.request.dto';
 import { CategoryDto } from 'src/category/dto/category.response.dto';
 import { DataSource, Repository } from 'typeorm';
 
@@ -17,6 +18,24 @@ export class CategoryRepository extends Repository<CategoryEntity> {
         where: { userId: userId, name: name },
       });
 
+      return category;
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //카테고리 접근 권한 체크
+  async checkCategoryAccess(userId: number, id: number): Promise<CategoryEntity> {
+    try {
+      const category: CategoryEntity = await this.findOne({
+        where: {
+          userId: userId,
+          id: id,
+        },
+      });
       return category;
     } catch (error) {
       throw new HttpException(
@@ -51,6 +70,18 @@ export class CategoryRepository extends Repository<CategoryEntity> {
       });
 
       return categories;
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //카테고리 수정
+  async updateCategory(id: number, categoryRequestDto: CategoryRequestDto): Promise<void> {
+    try {
+      await this.update(id, categoryRequestDto);
     } catch (error) {
       throw new HttpException(
         CustomHttpException['DB_SERVER_ERROR'],

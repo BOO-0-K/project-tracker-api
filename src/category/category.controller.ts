@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, UseGuards, ValidationPipe } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { AuthGuard } from '@nestjs/passport';
 import { UserEntity } from 'src/_entities/user.entity';
@@ -8,6 +8,7 @@ import {
   CategoryIdDto,
   CategoryListDto,
   CategoryListResponseDto,
+  CategoryUpdateResponseDto,
 } from './dto/category.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
 import { Token } from 'src/_commons/auth/token.decorator';
@@ -52,6 +53,28 @@ export class CategoryController {
       statusCode: 200,
       message: CustomHttpSuccess['GET_CATEGORIES_SUCCESS'],
       data: categories,
+    };
+  }
+
+  /**
+   * 카테고리 수정
+   * @param user UserEntity
+   * @param id string
+   * @param categoryRequestDto CategoryRequestDto
+   * @returns CategoryUpdateResponseDto
+   */
+  @Patch(':id')
+  @UseGuards(AuthGuard())
+  async updateCategory(
+    @Token() user: UserEntity,
+    @Param('id') id: string,
+    @Body(ValidationPipe) categoryRequestDto: CategoryRequestDto,
+  ): Promise<CategoryUpdateResponseDto> {
+    await this.categoryService.updateCategory(+user.id, +id, categoryRequestDto);
+
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['UPDATE_CATEGORY_SUCCESS'],
     };
   }
 }

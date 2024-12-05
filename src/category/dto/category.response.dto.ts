@@ -27,3 +27,9 @@ export class CategoryListResponseDto {
   readonly message: string;
   readonly data: object;
 }
+
+//카테고리 수정 Response
+export class CategoryUpdateResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+}
