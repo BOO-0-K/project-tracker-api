@@ -14,6 +14,11 @@ export const CustomHttpException = {
     code: 'FORBIDDEN_CATEGORY',
     message: '해당 카테고리의 접근 권한이 없습니다.',
   },
+  FORBIDDEN_TEMPLATE: {
+    statusCode: 403,
+    code: 'FORBIDDEN_CATEGORY',
+    message: '해당 템플릿의 접근 권한이 없습니다.',
+  },
   CONFLICT_EMAIL: {
     statusCode: 409,
     code: 'CONFLICT_EMAIL',
@@ -23,6 +28,11 @@ export const CustomHttpException = {
     statusCode: 409,
     code: 'CONFLICT_CATEGORY',
     message: '이미 사용중인 카테고리입니다.',
+  },
+  CONFLICT_TEMPLATE: {
+    statusCode: 409,
+    code: 'CONFLICT_CATEGORY',
+    message: '이미 사용중인 템플릿입니다.',
   },
   DB_SERVER_ERROR: {
     statusCode: 500,

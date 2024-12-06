@@ -10,4 +10,8 @@ export const CustomHttpSuccess = {
   GET_TODOS_SUCCESS: '투두 리스트 성공',
   UPDATE_TODO_SUCCESS: '투두 수정 성공',
   DELETE_TODO_SUCCESS: '투두 삭제 성공',
+  ADD_TEMPLATE_SUCCESS: '템플릿 추가 성공',
+  GET_TEMPLATES_SUCCESS: '템플릿 리스트 성공',
+  UPDATE_TEMPLATE_SUCCESS: '템플릿 수정 성공',
+  DELETE_TEMPLATE_SUCCESS: '템플릿 삭제 성공',
 };

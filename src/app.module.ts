@@ -6,9 +6,16 @@ import { typeORMConfig } from './_configs/typeorm.config';
 import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { TodoModule } from './todo/todo.module';
+import { TemplateModule } from './template/template.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeORMConfig), UserModule, CategoryModule, TodoModule],
+  imports: [
+    TypeOrmModule.forRoot(typeORMConfig),
+    UserModule,
+    CategoryModule,
+    TodoModule,
+    TemplateModule,
+  ],
   controllers: [AppController],
   providers: [],
 })
