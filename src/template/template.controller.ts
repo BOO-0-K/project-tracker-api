@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  UseGuards,
+  ValidationPipe,
+} from '@nestjs/common';
 import { TemplateService } from './template.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Token } from 'src/_commons/auth/token.decorator';
@@ -9,6 +18,7 @@ import {
   TemplateIdDto,
   TemplateListDto,
   TemplateListResponseDto,
+  TemplateUpdateResponseDto,
 } from './dto/template.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
 
@@ -52,6 +62,27 @@ export class TemplateController {
       statusCode: 200,
       message: CustomHttpSuccess['GET_TEMPLATES_SUCCESS'],
       data: templates,
+    };
+  }
+
+  /**
+   * 템플릿 수정
+   * @param user UserEntity
+   * @param id string
+   * @param templateRequestDto TemplateRequestDto
+   * @returns TemplateUpdateResponseDto
+   */
+  @Patch(':id')
+  @UseGuards(AuthGuard())
+  async updateTemplate(
+    @Token() user: UserEntity,
+    @Param('id') id: string,
+    @Body(ValidationPipe) templateRequestDto: TemplateRequestDto,
+  ): Promise<TemplateUpdateResponseDto> {
+    await this.templateService.updateTemplate(+user.id, +id, templateRequestDto);
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['UPDATE_TEMPLATE_SUCCESS'],
     };
   }
 }

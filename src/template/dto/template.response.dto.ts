@@ -21,9 +21,15 @@ export class TemplateListDto {
   readonly templates: Array<TemplateDto>;
 }
 
-//팀플릿 리스트 Response
+//템플릿 리스트 Response
 export class TemplateListResponseDto {
   readonly statusCode: number;
   readonly message: string;
   readonly data: object;
+}
+
+//템플릿 수정 Response
+export class TemplateUpdateResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
 }
