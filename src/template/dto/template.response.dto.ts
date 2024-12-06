@@ -9,3 +9,21 @@ export class TemplateAddResponseDto {
   readonly message: string;
   readonly data: object;
 }
+
+//템플릿
+export class TemplateDto {
+  readonly id: number;
+  readonly name: string;
+}
+
+//템플릿 리스트
+export class TemplateListDto {
+  readonly templates: Array<TemplateDto>;
+}
+
+//팀플릿 리스트 Response
+export class TemplateListResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+  readonly data: object;
+}

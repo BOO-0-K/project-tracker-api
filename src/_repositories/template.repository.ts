@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 import { TemplateEntity } from 'src/_entities/template.entity';
+import { TemplateDto } from 'src/template/dto/template.response.dto';
 import { DataSource, Repository } from 'typeorm';
 
 @Injectable()
@@ -29,6 +30,26 @@ export class TemplateRepository extends Repository<TemplateEntity> {
     try {
       const template = await this.insert({ userId: userId, name: name });
       return template.identifiers[0].id;
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //모든 템플릿 리스트 조회
+  async findAllTemplates(userId: number): Promise<Array<TemplateDto>> {
+    try {
+      const templates: Array<TemplateDto> = await this.find({
+        where: { userId: userId },
+        order: {
+          createdAt: 'ASC',
+        },
+        select: ['id', 'name'],
+      });
+
+      return templates;
     } catch (error) {
       throw new HttpException(
         CustomHttpException['DB_SERVER_ERROR'],

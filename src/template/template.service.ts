@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { TemplateRepository } from 'src/_repositories/template.repository';
 import { TemplateRequestDto } from './dto/template.request.dto';
-import { TemplateIdDto } from './dto/template.response.dto';
+import { TemplateDto, TemplateIdDto, TemplateListDto } from './dto/template.response.dto';
 import { TemplateEntity } from 'src/_entities/template.entity';
 import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
@@ -33,5 +33,16 @@ export class TemplateService {
     const templateId: number = await this.templateRepository.createTemplate(userId, name);
 
     return { id: templateId };
+  }
+
+  /**
+   * 템플릿 리스트
+   * @param userId number
+   * @returns TemplateListDto
+   */
+  async getTemplates(userId: number): Promise<TemplateListDto> {
+    const templates: Array<TemplateDto> = await this.templateRepository.findAllTemplates(userId);
+
+    return { templates };
   }
 }
