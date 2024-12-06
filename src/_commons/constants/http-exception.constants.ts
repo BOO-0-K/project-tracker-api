@@ -16,8 +16,13 @@ export const CustomHttpException = {
   },
   FORBIDDEN_TEMPLATE: {
     statusCode: 403,
-    code: 'FORBIDDEN_CATEGORY',
+    code: 'FORBIDDEN_TEMPLATE',
     message: '해당 템플릿의 접근 권한이 없습니다.',
+  },
+  FORBIDDEN_TEMPLATE_CATEGORY: {
+    statusCode: 403,
+    code: 'FORBIDDEN_TEMPLATE_CATEGORY',
+    message: '해당 템플릿의 카테고리 접근 권한이 없습니다.',
   },
   CONFLICT_EMAIL: {
     statusCode: 409,

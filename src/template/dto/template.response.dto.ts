@@ -33,3 +33,9 @@ export class TemplateUpdateResponseDto {
   readonly statusCode: number;
   readonly message: string;
 }
+
+//템플릿 삭제 Response
+export class TemplateDeleteResponseDto {
+  readonly statusCode: number;
+  readonly message: string;
+}

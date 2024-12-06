@@ -14,4 +14,8 @@ export const CustomHttpSuccess = {
   GET_TEMPLATES_SUCCESS: '템플릿 리스트 성공',
   UPDATE_TEMPLATE_SUCCESS: '템플릿 수정 성공',
   DELETE_TEMPLATE_SUCCESS: '템플릿 삭제 성공',
+  ADD_CATEGORY_TO_TEMPLATE_SUCCESS: '템플릿에 카테고리 추가 성공',
+  GET_TEMPLATE_CATEGORIES_SUCCESS: '모든 템플릿 카테고리 리스트 성공',
+  REMOVE_CATEGORY_FROM_TEMPLATE_SUCCESS: '템플릿에서 카테고리 제거 성공',
+  COPY_TEMPLATE_SUCCESS: '템플릿 복사 성공',
 };

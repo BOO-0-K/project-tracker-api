@@ -85,4 +85,34 @@ export class TemplateRepository extends Repository<TemplateEntity> {
       );
     }
   }
+
+  //템플릿 삭제
+  async deleteTemplate(id: number): Promise<void> {
+    try {
+      await this.delete(id);
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  //userId에 해당하는 모든 템플릿 id 반환
+  async getTemplateIdsByUserId(userId: number): Promise<Array<number>> {
+    try {
+      const templates: Array<TemplateEntity> = await this.find({ where: { userId: userId } });
+
+      const templateIds = [];
+      templates.forEach((item) => {
+        templateIds.push(item.id);
+      });
+      return templateIds;
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

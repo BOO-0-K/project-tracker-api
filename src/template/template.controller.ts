@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -15,6 +16,7 @@ import { UserEntity } from 'src/_entities/user.entity';
 import { TemplateRequestDto } from './dto/template.request.dto';
 import {
   TemplateAddResponseDto,
+  TemplateDeleteResponseDto,
   TemplateIdDto,
   TemplateListDto,
   TemplateListResponseDto,
@@ -83,6 +85,25 @@ export class TemplateController {
     return {
       statusCode: 200,
       message: CustomHttpSuccess['UPDATE_TEMPLATE_SUCCESS'],
+    };
+  }
+
+  /**
+   * 템플릿 삭제
+   * @param user UserEntity
+   * @param id string
+   * @returns TemplateDeleteResponseDto
+   */
+  @Delete(':id')
+  @UseGuards(AuthGuard())
+  async deleteTemplate(
+    @Token() user: UserEntity,
+    @Param('id') id: string,
+  ): Promise<TemplateDeleteResponseDto> {
+    await this.templateService.deleteTemplate(+user.id, +id);
+    return {
+      statusCode: 200,
+      message: CustomHttpSuccess['DELETE_TEMPLATE_SUCCESS'],
     };
   }
 }

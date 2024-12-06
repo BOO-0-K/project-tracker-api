@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { CategoryModule } from './category/category.module';
 import { TodoModule } from './todo/todo.module';
 import { TemplateModule } from './template/template.module';
+import { TemplateCategoryModule } from './template-category/template-category.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { TemplateModule } from './template/template.module';
     CategoryModule,
     TodoModule,
     TemplateModule,
+    TemplateCategoryModule,
   ],
   controllers: [AppController],
   providers: [],

@@ -92,4 +92,16 @@ export class TodoRepository extends Repository<TodoEntity> {
       );
     }
   }
+
+  //ToDo 2개 이상 추가
+  async createTodos(todos: Array<TodoRequestDto>): Promise<void> {
+    try {
+      await this.save(todos);
+    } catch (error) {
+      throw new HttpException(
+        CustomHttpException['DB_SERVER_ERROR'],
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

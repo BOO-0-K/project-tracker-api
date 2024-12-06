@@ -79,4 +79,23 @@ export class TemplateService {
 
     await this.templateRepository.updateTemplate(id, templateRequestDto);
   }
+
+  /**
+   * 템플릿 삭제
+   * @param userId number
+   * @param id number
+   * @returns
+   */
+  async deleteTemplate(userId: number, id: number): Promise<void> {
+    //템플릿 접근 권한 체크
+    const templateAccess: TemplateEntity = await this.templateRepository.checkTemplateAccess(
+      userId,
+      id,
+    );
+    if (!templateAccess) {
+      throw new HttpException(CustomHttpException['FORBIDDEN_TEMPLATE'], HttpStatus.FORBIDDEN);
+    }
+
+    await this.templateRepository.deleteTemplate(id);
+  }
 }
