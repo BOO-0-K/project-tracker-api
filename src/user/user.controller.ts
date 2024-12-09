@@ -11,7 +11,19 @@ import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants
 import { AuthGuard } from '@nestjs/passport';
 import { UserEntity } from 'src/_entities/user.entity';
 import { Token } from 'src/_commons/auth/token.decorator';
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
+@ApiTags('회원')
 @Controller('users')
 export class UserController {
   constructor(private userService: UserService) {}
@@ -21,6 +33,23 @@ export class UserController {
    * @param signupRequestDto SignupRequestDto
    * @returns SignupResponseDto
    */
+  @ApiOperation({ summary: '회원가입' })
+  @ApiCreatedResponse({
+    description: CustomHttpSuccess['SIGNUP_SUCCESS'],
+    type: SignupResponseDto,
+  })
+  @ApiConflictResponse({
+    content: {
+      'application/json': {
+        examples: {
+          CONFLICT_CATEGORY: {
+            description: CustomHttpException['CONFLICT_EMAIL']['message'],
+            value: CustomHttpException['CONFLICT_EMAIL'],
+          },
+        },
+      },
+    },
+  })
   @Post('/signup')
   async signup(
     @Body(ValidationPipe) signupRequestDto: SignupRequestDto,
@@ -38,6 +67,23 @@ export class UserController {
    * @param signinRequestDto SigninRequestDto
    * @returns SigninResponseDto
    */
+  @ApiOperation({ summary: '로그인' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['SIGNIN_SUCCESS'],
+    type: SigninResponseDto,
+  })
+  @ApiUnauthorizedResponse({
+    content: {
+      'application/json': {
+        examples: {
+          UNAUTHORIZED_ACCOUNT: {
+            description: CustomHttpException['UNAUTHORIZED_ACCOUNT']['message'],
+            value: CustomHttpException['UNAUTHORIZED_ACCOUNT'],
+          },
+        },
+      },
+    },
+  })
   @HttpCode(200)
   @Post('/signin')
   async signin(
@@ -56,6 +102,13 @@ export class UserController {
    * @param user UserEntity
    * @returns MeResponseDto
    */
+  @ApiOperation({ summary: '내 정보 보기' })
+  @ApiBearerAuth()
+  @ApiSecurity('access-token')
+  @ApiOkResponse({
+    description: CustomHttpSuccess['GET_MY_INFO_SUCCESS'],
+    type: MeResponseDto,
+  })
   @Get('/me')
   @UseGuards(AuthGuard())
   async getMyInfo(@Token() user: UserEntity): Promise<MeResponseDto> {

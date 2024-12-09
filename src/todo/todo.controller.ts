@@ -24,7 +24,20 @@ import {
   TodoUpdateResponseDto,
 } from './dto/todo.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
+@ApiTags('투두')
+@ApiBearerAuth()
+@ApiSecurity('access-token')
 @Controller('todos')
 export class TodoController {
   constructor(private readonly todoService: TodoService) {}
@@ -35,6 +48,23 @@ export class TodoController {
    * @param todoRequestDto TodoRequestDto
    * @returns TodoAddResponseDto
    */
+  @ApiOperation({ summary: '투두 추가' })
+  @ApiCreatedResponse({
+    description: CustomHttpSuccess['ADD_TODO_SUCCESS'],
+    type: TodoAddResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_CATEGORY: {
+            description: CustomHttpException['FORBIDDEN_CATEGORY']['message'],
+            value: CustomHttpException['FORBIDDEN_CATEGORY'],
+          },
+        },
+      },
+    },
+  })
   @Post()
   @UseGuards(AuthGuard())
   async addTodo(
@@ -55,6 +85,11 @@ export class TodoController {
    * @param categoryIdRequestDto CategoryIdRequestDto
    * @returns TodoListResponseDto
    */
+  @ApiOperation({ summary: '투두 리스트' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['GET_TODOS_SUCCESS'],
+    type: TodoListResponseDto,
+  })
   @Get()
   @UseGuards(AuthGuard())
   async getTodos(
@@ -76,6 +111,27 @@ export class TodoController {
    * @param todoRequestDto TodoRequestDto
    * @returns TodoUpdateResponseDto
    */
+  @ApiOperation({ summary: '투두 수정' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['UPDATE_TODO_SUCCESS'],
+    type: TodoUpdateResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_TODO: {
+            description: CustomHttpException['FORBIDDEN_TODO']['message'],
+            value: CustomHttpException['FORBIDDEN_TODO'],
+          },
+          FORBIDDEN_CATEGORY: {
+            description: CustomHttpException['FORBIDDEN_CATEGORY']['message'],
+            value: CustomHttpException['FORBIDDEN_CATEGORY'],
+          },
+        },
+      },
+    },
+  })
   @Patch(':id')
   @UseGuards(AuthGuard())
   async updateTodo(
@@ -96,6 +152,23 @@ export class TodoController {
    * @param id string
    * @returns TodoDeleteResponseDto
    */
+  @ApiOperation({ summary: '투두 삭제' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['DELETE_TODO_SUCCESS'],
+    type: TodoDeleteResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_TODO: {
+            description: CustomHttpException['FORBIDDEN_TODO']['message'],
+            value: CustomHttpException['FORBIDDEN_TODO'],
+          },
+        },
+      },
+    },
+  })
   @Delete(':id')
   @UseGuards(AuthGuard())
   async deleteTodo(

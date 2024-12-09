@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 
 //회원가입 Request
@@ -6,6 +7,11 @@ export class SignupRequestDto {
   @IsNotEmpty()
   @MinLength(4)
   @MaxLength(100)
+  @ApiProperty({
+    example: 'test@test.com',
+    description: '이메일',
+    required: true,
+  })
   email: string; //이메일
 
   @IsString()
@@ -14,6 +20,11 @@ export class SignupRequestDto {
   @MaxLength(100)
   @Matches(/^[a-zA-Z0-9]*/, {
     message: 'password only accepts english and number',
+  })
+  @ApiProperty({
+    example: '1234',
+    description: '패스워드',
+    required: true,
   })
   password: string; //패스워드
 }
@@ -24,6 +35,11 @@ export class SigninRequestDto {
   @IsNotEmpty()
   @MinLength(4)
   @MaxLength(100)
+  @ApiProperty({
+    example: 'test@test.com',
+    description: '이메일',
+    required: true,
+  })
   email: string; //이메일
 
   @IsString()
@@ -32,6 +48,11 @@ export class SigninRequestDto {
   @MaxLength(100)
   @Matches(/^[a-zA-Z0-9]*/, {
     message: 'password only accepts english and number',
+  })
+  @ApiProperty({
+    example: '1234',
+    description: '패스워드',
+    required: true,
   })
   password: string; //패스워드
 }

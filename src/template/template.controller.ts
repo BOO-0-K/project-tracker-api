@@ -23,7 +23,21 @@ import {
   TemplateUpdateResponseDto,
 } from './dto/template.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
+@ApiTags('템플릿')
+@ApiBearerAuth()
+@ApiSecurity('access-token')
 @Controller('templates')
 export class TemplateController {
   constructor(private readonly templateService: TemplateService) {}
@@ -34,6 +48,23 @@ export class TemplateController {
    * @param templateRequestDto TemplateRequestDto
    * @returns TemplateAddResponseDto
    */
+  @ApiOperation({ summary: '템플릿 추가' })
+  @ApiCreatedResponse({
+    description: CustomHttpSuccess['ADD_TEMPLATE_SUCCESS'],
+    type: TemplateAddResponseDto,
+  })
+  @ApiConflictResponse({
+    content: {
+      'application/json': {
+        examples: {
+          CONFLICT_TEMPLATE: {
+            description: CustomHttpException['CONFLICT_TEMPLATE']['message'],
+            value: CustomHttpException['CONFLICT_TEMPLATE'],
+          },
+        },
+      },
+    },
+  })
   @Post()
   @UseGuards(AuthGuard())
   async addTemplate(
@@ -56,6 +87,11 @@ export class TemplateController {
    * @param user UserEntity
    * @returns TemplateListResponseDto
    */
+  @ApiOperation({ summary: '템플릿 리스트' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['GET_TEMPLATES_SUCCESS'],
+    type: TemplateListResponseDto,
+  })
   @Get()
   @UseGuards(AuthGuard())
   async getTemplates(@Token() user: UserEntity): Promise<TemplateListResponseDto> {
@@ -74,6 +110,35 @@ export class TemplateController {
    * @param templateRequestDto TemplateRequestDto
    * @returns TemplateUpdateResponseDto
    */
+  @ApiOperation({ summary: '템플릿 수정' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['UPDATE_TEMPLATE_SUCCESS'],
+    type: TemplateUpdateResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_TEMPLATE: {
+            description: CustomHttpException['FORBIDDEN_TEMPLATE']['message'],
+            value: CustomHttpException['FORBIDDEN_TEMPLATE'],
+          },
+        },
+      },
+    },
+  })
+  @ApiConflictResponse({
+    content: {
+      'application/json': {
+        examples: {
+          CONFLICT_TEMPLATE: {
+            description: CustomHttpException['CONFLICT_TEMPLATE']['message'],
+            value: CustomHttpException['CONFLICT_TEMPLATE'],
+          },
+        },
+      },
+    },
+  })
   @Patch(':id')
   @UseGuards(AuthGuard())
   async updateTemplate(
@@ -94,6 +159,23 @@ export class TemplateController {
    * @param id string
    * @returns TemplateDeleteResponseDto
    */
+  @ApiOperation({ summary: '템플릿 삭제' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['DELETE_TEMPLATE_SUCCESS'],
+    type: TemplateDeleteResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_TEMPLATE: {
+            description: CustomHttpException['FORBIDDEN_TEMPLATE']['message'],
+            value: CustomHttpException['FORBIDDEN_TEMPLATE'],
+          },
+        },
+      },
+    },
+  })
   @Delete(':id')
   @UseGuards(AuthGuard())
   async deleteTemplate(

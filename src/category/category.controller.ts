@@ -23,7 +23,21 @@ import {
 } from './dto/category.response.dto';
 import { CustomHttpSuccess } from 'src/_commons/constants/http-success.constants';
 import { Token } from 'src/_commons/auth/token.decorator';
+import {
+  ApiBearerAuth,
+  ApiConflictResponse,
+  ApiCreatedResponse,
+  ApiForbiddenResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiSecurity,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CustomHttpException } from 'src/_commons/constants/http-exception.constants';
 
+@ApiTags('카테고리')
+@ApiBearerAuth()
+@ApiSecurity('access-token')
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
@@ -34,6 +48,23 @@ export class CategoryController {
    * @param categoryRequestDto CategoryRequestDto
    * @returns CategoryAddResponseDto
    */
+  @ApiOperation({ summary: '카테고리 추가' })
+  @ApiCreatedResponse({
+    description: CustomHttpSuccess['ADD_CATEGORY_SUCCESS'],
+    type: CategoryAddResponseDto,
+  })
+  @ApiConflictResponse({
+    content: {
+      'application/json': {
+        examples: {
+          CONFLICT_CATEGORY: {
+            description: CustomHttpException['CONFLICT_CATEGORY']['message'],
+            value: CustomHttpException['CONFLICT_CATEGORY'],
+          },
+        },
+      },
+    },
+  })
   @Post()
   @UseGuards(AuthGuard())
   async addCategory(
@@ -56,6 +87,11 @@ export class CategoryController {
    * @param user UserEntity
    * @returns CategoryListResponseDto
    */
+  @ApiOperation({ summary: '카테고리 리스트' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['GET_CATEGORIES_SUCCESS'],
+    type: CategoryListResponseDto,
+  })
   @Get()
   @UseGuards(AuthGuard())
   async getCategories(@Token() user: UserEntity): Promise<CategoryListResponseDto> {
@@ -74,6 +110,35 @@ export class CategoryController {
    * @param categoryRequestDto CategoryRequestDto
    * @returns CategoryUpdateResponseDto
    */
+  @ApiOperation({ summary: '카테고리 수정' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['UPDATE_CATEGORY_SUCCESS'],
+    type: CategoryUpdateResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_CATEGORY: {
+            description: CustomHttpException['FORBIDDEN_CATEGORY']['message'],
+            value: CustomHttpException['FORBIDDEN_CATEGORY'],
+          },
+        },
+      },
+    },
+  })
+  @ApiConflictResponse({
+    content: {
+      'application/json': {
+        examples: {
+          CONFLICT_CATEGORY: {
+            description: CustomHttpException['CONFLICT_CATEGORY']['message'],
+            value: CustomHttpException['CONFLICT_CATEGORY'],
+          },
+        },
+      },
+    },
+  })
   @Patch(':id')
   @UseGuards(AuthGuard())
   async updateCategory(
@@ -95,6 +160,23 @@ export class CategoryController {
    * @param id string
    * @returns CategoryDeleteResponseDto
    */
+  @ApiOperation({ summary: '카테고리 삭제' })
+  @ApiOkResponse({
+    description: CustomHttpSuccess['DELETE_CATEGORY_SUCCESS'],
+    type: CategoryDeleteResponseDto,
+  })
+  @ApiForbiddenResponse({
+    content: {
+      'application/json': {
+        examples: {
+          FORBIDDEN_CATEGORY: {
+            description: CustomHttpException['FORBIDDEN_CATEGORY']['message'],
+            value: CustomHttpException['FORBIDDEN_CATEGORY'],
+          },
+        },
+      },
+    },
+  })
   @Delete(':id')
   @UseGuards(AuthGuard())
   async deleteCategory(
